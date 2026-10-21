@@ -57,16 +57,45 @@ The project is built CLI-first. `main.py` builds an owner, two pets and a handfu
 Paste a sample of your app's CLI or Streamlit output here so a reader can see what a generated plan looks like:
 
 ```
-Today's Schedule for Danny (Tuesday, October 20, 2026)
+PawPal+ schedule for Danny (Wednesday, October 21, 2026)
 
-Mochi the dog
-18:00  Evening walk           Mochi    high   daily
-07:30  Morning walk           Mochi    high   daily
-12:00  Flea medication        Mochi    medium weekly
+=== Today, sorted by time ===
+   Time  Task                  Pet     Pri    Repeats Done
+🐕 07:30 Morning walk          Mochi   high   daily   ⬜
+🍽️ 07:30 Breakfast             Biscuit high   daily   ⬜
+💊 12:00 Flea medication       Mochi   medium weekly  ⬜
+🐕 18:00 Evening walk          Mochi   high   daily   ⬜
+📌 19:15 Brush coat            Biscuit low    weekly  ⬜
 
-Biscuit the cat
-07:30  Breakfast              Biscuit  high   daily
-19:15  Brush coat             Biscuit  low    weekly
+=== Mochi's tasks only ===
+   Time  Task                  Pet     Pri    Repeats Done
+🐕 18:00 Evening walk          Mochi   high   daily   ⬜
+🐕 07:30 Morning walk          Mochi   high   daily   ⬜
+💊 12:00 Flea medication       Mochi   medium weekly  ⬜
+
+=== By priority (high first) ===
+   Time  Task                  Pet     Pri    Repeats Done
+🐕 07:30 Morning walk          Mochi   high   daily   ⬜
+🍽️ 07:30 Breakfast             Biscuit high   daily   ⬜
+🐕 18:00 Evening walk          Mochi   high   daily   ⬜
+💊 12:00 Flea medication       Mochi   medium weekly  ⬜
+📌 19:15 Brush coat            Biscuit low    weekly  ⬜
+
+=== Conflicts ===
+⚠️  Conflict at 07:30 on 2026-10-21: Morning walk (Mochi) and Breakfast (Biscuit)
+
+=== Why this order ===
+07:30 Morning walk (Mochi): high priority; earliest slot; conflicts with Breakfast (Biscuit)
+07:30 Breakfast (Biscuit): high priority; after Morning walk; conflicts with Morning walk (Mochi)
+12:00 Flea medication (Mochi): medium priority; after Breakfast
+18:00 Evening walk (Mochi): high priority; after Flea medication
+19:15 Brush coat (Biscuit): low priority; after Evening walk
+
+=== Completed 'Morning walk' (daily), next one created ===
+   Time  Task                  Pet     Pri    Repeats Done
+🐕 07:30 Morning walk          Mochi   high   daily   ✅
+🐕 07:30 Morning walk          Mochi   high   daily   ⬜
+Next occurrence due 2026-10-22
 ```
 
 ## 🧪 Testing PawPal+

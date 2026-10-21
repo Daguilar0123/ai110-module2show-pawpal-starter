@@ -1,8 +1,8 @@
-"""PawPal+ CLI demo: build an owner with two pets and print today's tasks."""
+"""PawPal+ CLI demo: build an owner with two pets and show what the Scheduler can do."""
 
 from datetime import date
 
-from pawpal_system import Owner, Pet, Task
+from pawpal_system import Owner, Pet, Scheduler, Task
 
 
 def build_demo_owner() -> Owner:
@@ -22,14 +22,32 @@ def build_demo_owner() -> Owner:
     return owner
 
 
-def print_schedule(owner: Owner) -> None:
-    # S4 replaces this with Scheduler.format_schedule
-    print(f"Today's Schedule for {owner.name} ({date.today():%A, %B %d, %Y})")
-    for pet in owner.pets:
-        print(f"\n{pet.name} the {pet.species}")
-        for t in pet.list_tasks():
-            print(f"{t.time}  {t.description:<22} {t.pet_name:<8} {t.priority:<6} {t.frequency}")
+def show(title: str, body: str) -> None:
+    """Print a section header followed by its body."""
+    print(f"\n=== {title} ===")
+    print(body)
+
+
+def run_demo(owner: Owner) -> None:
+    """Walk through every Scheduler feature in order."""
+    scheduler = Scheduler(owner)
+    print(f"PawPal+ schedule for {owner.name} ({date.today():%A, %B %d, %Y})")
+
+    show("Today, sorted by time", scheduler.format_schedule(scheduler.sort_by_time()))
+    show("Mochi's tasks only", scheduler.format_schedule(scheduler.filter_tasks(pet_name="Mochi")))
+    show("By priority (high first)", scheduler.format_schedule(scheduler.sort_by_priority()))
+
+    conflicts = scheduler.detect_conflicts()
+    show("Conflicts", "\n".join(f"⚠️  {w}" for w in conflicts) or "None")
+
+    show("Why this order", scheduler.explain_schedule(scheduler.sort_by_time()))
+
+    walk = next(t for t in scheduler.sort_by_time() if t.description == "Morning walk")
+    nxt = scheduler.mark_task_complete(walk)
+    show("Completed 'Morning walk' (daily), next one created",
+         scheduler.format_schedule([walk, nxt]) + f"\nNext occurrence due {nxt.due_date}" if nxt
+         else "No next occurrence")
 
 
 if __name__ == "__main__":
-    print_schedule(build_demo_owner())
+    run_demo(build_demo_owner())

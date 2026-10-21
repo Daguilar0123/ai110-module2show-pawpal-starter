@@ -171,12 +171,12 @@ class Scheduler:
                     return emoji
             return "📌"
 
-        lines = [f"   {'Time':<6}{'Task':<22}{'Pet':<8}{'Pri':<6}{'Repeats':<8}Done"]
+        lines = [f"   {'Time':<6}{'Task':<22}{'Pet':<8}{'Pri':<7}{'Repeats':<8}Done"]
         for t in tasks:
             done = "✅" if t.completed else "⬜"
             lines.append(
                 f"{emoji_for(t.description)} {t.time:<6}{t.description:<22}{t.pet_name:<8}"
-                f"{t.priority:<6}{t.frequency:<8}{done}"
+                f"{t.priority:<7}{t.frequency:<8}{done}"
             )
         return "\n".join(lines)
 
