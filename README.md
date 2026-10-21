@@ -102,17 +102,54 @@ Next occurrence due 2026-10-22
 
 ```bash
 # Run the full test suite:
-pytest
+.venv/bin/python -m pytest -v   # or, with the venv active: python -m pytest
 
-# Run with coverage:
-pytest --cov
+# Run with coverage (needs `uv pip install pytest-cov` first; it is not in requirements.txt):
+python -m pytest --cov
 ```
 
-Sample test output:
+The suite builds real `Owner`, `Pet` and `Task` objects (no mocks) from a shared fixture: one owner, two pets and six tasks added out of order. It covers the classes themselves (completing a task, adding tasks to a pet, rejecting a duplicate pet name), sorting by time (including unpadded hours like "9:00") and by priority, filtering by pet (case-insensitive) and completed status, daily, weekly and one-off recurrence through `Scheduler.mark_task_complete`, conflict detection across pets and within one pet (completed tasks ignored), today's schedule, an owner with an empty pet, and `get_all_tasks` across several pets. A double-complete check confirms that marking the same task complete twice adds only one next occurrence. `tests/test_scheduler.py` keeps the earlier monkeypatched checks from the algorithms branch, plus the formatting and explanation tests.
+
+Test output (`.venv/bin/python -m pytest -v`):
 
 ```
-# Paste your pytest output here
+============================= test session starts ==============================
+platform darwin -- Python 3.13.13, pytest-9.1.1, pluggy-1.7.0 -- /Users/danielaguilar/pawpal-tests/.venv/bin/python
+plugins: anyio-4.15.1
+collecting ... collected 27 items
+
+tests/test_pawpal.py::test_mark_complete_changes_status PASSED           [  3%]
+tests/test_pawpal.py::test_add_task_increases_pet_task_count PASSED      [  7%]
+tests/test_pawpal.py::test_sort_by_time_returns_chronological_order PASSED [ 11%]
+tests/test_pawpal.py::test_sort_by_time_handles_unpadded_hours PASSED    [ 14%]
+tests/test_pawpal.py::test_marking_daily_task_complete_creates_next_day_task PASSED [ 18%]
+tests/test_pawpal.py::test_weekly_recurrence_is_seven_days PASSED        [ 22%]
+tests/test_pawpal.py::test_once_task_has_no_next_occurrence PASSED       [ 25%]
+tests/test_pawpal.py::test_detect_conflicts_flags_duplicate_times PASSED [ 29%]
+tests/test_pawpal.py::test_detect_conflicts_ignores_completed_tasks PASSED [ 33%]
+tests/test_pawpal.py::test_detect_conflicts_same_pet_same_time PASSED    [ 37%]
+tests/test_pawpal.py::test_filter_tasks_by_pet_is_case_insensitive PASSED [ 40%]
+tests/test_pawpal.py::test_filter_tasks_by_completed PASSED              [ 44%]
+tests/test_pawpal.py::test_todays_schedule_excludes_other_dates_and_completed PASSED [ 48%]
+tests/test_pawpal.py::test_pet_with_no_tasks PASSED                      [ 51%]
+tests/test_pawpal.py::test_sort_by_priority_high_before_low_then_time PASSED [ 55%]
+tests/test_pawpal.py::test_get_all_tasks_spans_multiple_pets PASSED      [ 59%]
+tests/test_pawpal.py::test_add_pet_rejects_duplicate_name_ignoring_case PASSED [ 62%]
+tests/test_pawpal.py::test_mark_task_complete_twice_does_not_duplicate PASSED [ 66%]
+tests/test_scheduler.py::test_sort_by_time_orders_chronologically PASSED [ 70%]
+tests/test_scheduler.py::test_filter_by_pet_and_status PASSED            [ 74%]
+tests/test_scheduler.py::test_detect_conflicts_flags_same_time_across_pets PASSED [ 77%]
+tests/test_scheduler.py::test_detect_conflicts_clean_returns_empty PASSED [ 81%]
+tests/test_scheduler.py::test_next_occurrence_daily_weekly_once PASSED   [ 85%]
+tests/test_scheduler.py::test_sort_by_priority_high_first_then_time PASSED [ 88%]
+tests/test_scheduler.py::test_explain_schedule_names_priority_and_conflict PASSED [ 92%]
+tests/test_scheduler.py::test_todays_schedule_only_incomplete_due_that_day PASSED [ 96%]
+tests/test_scheduler.py::test_format_schedule_has_header_row_per_task_and_emoji PASSED [100%]
+
+============================== 27 passed in 0.04s ==============================
 ```
+
+**Confidence level:** ★★★★☆
 
 ## 📐 Smarter Scheduling
 
