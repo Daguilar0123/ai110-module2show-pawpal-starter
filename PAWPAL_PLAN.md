@@ -139,16 +139,16 @@ Prompt patches Danny applies in the study repo: 04_Algorithms.md (add the method
 06_Polish_and_Docs.md (show the explanation in the UI).
 
 ### S2 — core classes (`feat/core-classes`)
-started 10:45 PM ET · STOP 1 reached 10:48 · tests green (2 passed) · committed df2ec3c · diff read by coordinator 11:26 · merged e053e20 at ~11:35 PM ET (main: 2 passed)
+started 10:45 PM ET · STOP 1 reached 10:48 · tests green (2 passed) · committed df2ec3c · diff read by coordinator 11:26 · merged e053e20 at ~11:35 PM ET (main: 2 passed) · pushed
 
 ### S3 — UI integration (`feat/ui-integration`)
-started 10:45 PM ET · STOP 1 approved · merged main (fast-forward to e053e20) · live check done on 8521 (10/10, Danny) · diff read by coordinator 1:01 AM · commit pending (Danny, 1:01 AM)
+started 10:45 PM ET · STOP 1 approved · merged main (fast-forward to e053e20) · live check done on 8521 (10/10, Danny) · diff read by coordinator 1:01 AM · committed a81336a (Danny, ~1:08 AM) · merged 15d52a5 (~1:13 AM) · pushed 1:20 AM ET
 
 ### S4 — scheduler algorithms (`feat/scheduler-algorithms`)
-started 10:45 PM ET · STOP 1 (9 tests green) · tests green (11 passed with the real Owner, Danny ran them) · live check done (main.py, Danny) · committed b94cdbf and 37031e3 · diff read by coordinator 1:01 AM · merge pending
+started 10:45 PM ET · STOP 1 (9 tests green) · tests green (11 passed with the real Owner, Danny ran them) · live check done (main.py, Danny) · committed b94cdbf and 37031e3 · diff read by coordinator 1:01 AM · merged c893884 (~1:13 AM; main: 11 passed, main.py output read) · pushed 1:20 AM ET (origin/main at 15d52a5)
 
 ### S5 — tests (`test/suite`)
-not started. Extra for S5 (coordinator, 1:01 AM ET): write `test_mark_task_complete_twice_does_not_duplicate` for the double-complete gap in `Scheduler.mark_task_complete`; show it failing, report it, do not fix it, do not commit it red.
+session pawpal-tests opened ~1:17 AM ET; prompt paste pending. Extra for S5 (coordinator, 1:01 AM ET): write `test_mark_task_complete_twice_does_not_duplicate` for the double-complete gap in `Scheduler.mark_task_complete`; show it failing, report it, do not fix it, do not commit it red.
 
 ### S6 — polish and docs (`main`)
 not started

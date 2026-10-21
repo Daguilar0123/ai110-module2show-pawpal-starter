@@ -1,0 +1,53 @@
+classDiagram
+    %% PawPal+ final diagram, matching pawpal_system.py as merged on main (Oct 21 2026).
+    %% Owner has Pets, Pet has Tasks, Scheduler reads every task through Owner.get_all_tasks().
+    %% Added since the draft: Scheduler.sort_by_priority and the Task.next_occurrence recurrence relation.
+    %% Persistence (to_dict, from_dict, save_to_json, load_from_json) and next_available_slot are not built yet.
+
+    %% next_occurrence returns None for frequency "once", so its return type is Optional~Task~.
+    class Task {
+        +str description
+        +str time
+        +str pet_name
+        +int duration_minutes
+        +str priority
+        +str frequency
+        +date due_date
+        +bool completed
+        +mark_complete() None
+        +next_occurrence() Optional~Task~
+    }
+
+    class Pet {
+        +str name
+        +str species
+        +list~Task~ tasks
+        +add_task(task) None
+        +list_tasks() list~Task~
+        +remove_task(task) bool
+    }
+
+    class Owner {
+        +str name
+        +list~Pet~ pets
+        +add_pet(pet) None
+        +get_pet(name) Optional~Pet~
+        +get_all_tasks() list~Task~
+    }
+
+    class Scheduler {
+        +Owner owner
+        +sort_by_time(tasks) list~Task~
+        +sort_by_priority(tasks) list~Task~
+        +filter_tasks(pet_name, completed) list~Task~
+        +detect_conflicts() list~str~
+        +mark_task_complete(task) Optional~Task~
+        +todays_schedule(on) list~Task~
+        +format_schedule(tasks) str
+        +explain_schedule(tasks) str
+    }
+
+    Owner "1" --> "*" Pet : has
+    Pet "1" --> "*" Task : has
+    Scheduler --> Owner : reads get_all_tasks()
+    Task ..> Task : next_occurrence()
