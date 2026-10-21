@@ -38,3 +38,12 @@
 **Which approach did you use in your final implementation and why?**
 
 <!-- Your conclusion -->
+
+---
+
+## Notes
+
+#note 2026-10-20 21:41 ET — coordinator started; env pinned to 3.13 (uv 0.12.7, `.venv/bin/python --version` printed 3.13.13, verified from Danny's pasted output).
+#note 2026-10-20 21:41 ET — S0: coordinator suggested a default set of three core actions; Danny wrote his own in reflection.md 1a (Track, Consider constraints, Produce a daily plan + explain why). Compared against the pinned design; gaps found: no explanation code, no owner preferences, no time budget, no task-type field.
+#note 2026-10-20 21:41 ET — S0: coordinator suggested adding only `Scheduler.explain_schedule(tasks) -> str` (S4). Danny accepted. Rejected for tonight: Task.category and Owner.preferences (cost: dataclass changes across S2/S3/S4/S8/S6 prompts and the UML). Danny: owner preferences stay out tonight; written up in reflection 2b, possible resubmission feature later this week. Verified by reading reflection.md 1a and PAWPAL_PLAN.md pinned block.
+#note 2026-10-20 21:41 ET — S0: Danny reviewed the four-object breakdown (Task, Pet, Owner, Scheduler with attributes and methods) and said "no changes"; pinned design plus explain_schedule is the contract.
