@@ -141,6 +141,8 @@ class Scheduler:
 
     def mark_task_complete(self, task: Task) -> Task | None:  # S4
         """Complete a task and add its next occurrence to its pet. Returns None for a 'once' task."""
+        if task.completed:
+            return None
         task.mark_complete()
         nxt = task.next_occurrence()
         if nxt:
