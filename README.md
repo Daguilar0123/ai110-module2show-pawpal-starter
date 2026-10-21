@@ -72,14 +72,18 @@ Sample test output:
 
 ## 📐 Smarter Scheduling
 
-> Fill in once you've implemented scheduling logic.
-
 | Feature | Method(s) | Notes |
 |---------|-----------|-------|
-| Task sorting | | e.g., by priority, duration |
-| Filtering | | e.g., skip tasks if time runs out |
-| Conflict handling | | e.g., overlapping time slots |
-| Recurring tasks | | e.g., daily vs. weekly |
+| Task sorting | `Scheduler.sort_by_time` | Sorts any task list by an `(hour, minute)` key built from "HH:MM", so "9:00" still sorts before "10:00". |
+| Filtering | `Scheduler.filter_tasks` | Narrows all of the owner's tasks by pet name (case-insensitive) and/or completed status; both filters are optional. |
+| Conflict handling | `Scheduler.detect_conflicts` | Warns when two or more incomplete tasks share the same date and time, for one pet or several; durations are deliberately ignored. |
+| Recurring tasks | `Task.next_occurrence`, `Scheduler.mark_task_complete` | Completing a daily or weekly task creates the next copy (+1 or +7 days, not completed) on the same pet; "once" tasks create nothing. |
+
+**Priority scheduling (stretch)**
+`Scheduler.sort_by_priority` orders tasks high, then medium, then low (using `PRIORITY_ORDER`), and breaks ties by time of day, so the most important care comes first even when it is later in the day.
+
+**Output formatting (stretch)**
+`Scheduler.format_schedule` prints a header and one aligned row per task using plain f-strings and emoji, with no extra dependency. The emoji map is by keyword in the description: walk 🐕, feed/breakfast/dinner 🍽️, med/pill 💊, vet/appointment 🏥, groom/bath 🛁, play/enrichment 🎾, anything else 📌; ✅ marks done tasks and ⬜ open ones.
 
 ## 📸 Demo Walkthrough
 
