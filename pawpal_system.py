@@ -23,7 +23,7 @@ class Task:
 
     def mark_complete(self) -> None:  # S2
         """Mark this task as done."""
-        raise NotImplementedError
+        self.completed = True
 
     def next_occurrence(self) -> Task | None:  # S4
         """Return the next copy of a daily or weekly task. Returns None for a 'once' task.
@@ -46,15 +46,20 @@ class Pet:
 
     def add_task(self, task: Task) -> None:  # S2
         """Add a task to this pet and stamp the pet's name on it."""
-        raise NotImplementedError
+        task.pet_name = self.name
+        self.tasks.append(task)
 
     def list_tasks(self) -> list[Task]:  # S2
         """Return this pet's tasks."""
-        raise NotImplementedError
+        return list(self.tasks)
 
     def remove_task(self, task: Task) -> bool:  # S2
         """Remove a task from this pet; return whether it was there."""
-        raise NotImplementedError
+        for i, existing in enumerate(self.tasks):
+            if existing is task:
+                del self.tasks[i]
+                return True
+        return False
 
 
 @dataclass
@@ -66,15 +71,20 @@ class Owner:
 
     def add_pet(self, pet: Pet) -> None:  # S2
         """Add a pet to this owner."""
-        raise NotImplementedError
+        if self.get_pet(pet.name) is not None:
+            raise ValueError(f"{self.name} already has a pet named {pet.name!r}")
+        self.pets.append(pet)
 
     def get_pet(self, name: str) -> Pet | None:  # S2
         """Find a pet by name, ignoring case. Returns None if there is no match."""
-        raise NotImplementedError
+        for pet in self.pets:
+            if pet.name.casefold() == name.casefold():
+                return pet
+        return None
 
     def get_all_tasks(self) -> list[Task]:  # S2
         """Return every pet's tasks as one list."""
-        raise NotImplementedError
+        return [task for pet in self.pets for task in pet.list_tasks()]
 
 
 def _time_key(task: Task) -> tuple[int, ...]:
