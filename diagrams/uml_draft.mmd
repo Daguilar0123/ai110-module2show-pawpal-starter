@@ -1,0 +1,51 @@
+classDiagram
+    %% PawPal+ Phase 1 draft: required work only. Four classes: Owner, Pet, Task, Scheduler.
+    %% Owner has Pets, Pet has Tasks, Scheduler reads every task through Owner.get_all_tasks().
+    %% Optional-extension methods (persistence, priority sort, next slot) are left out on purpose;
+    %% the Phase 6 final diagram shows whatever the build actually added.
+
+    %% next_occurrence returns None for frequency "once", so its return type is Optional~Task~.
+    class Task {
+        +str description
+        +str time
+        +str pet_name
+        +int duration_minutes
+        +str priority
+        +str frequency
+        +date due_date
+        +bool completed
+        +mark_complete() None
+        +next_occurrence() Optional~Task~
+    }
+
+    class Pet {
+        +str name
+        +str species
+        +list~Task~ tasks
+        +add_task(task) None
+        +list_tasks() list~Task~
+        +remove_task(task) bool
+    }
+
+    class Owner {
+        +str name
+        +list~Pet~ pets
+        +add_pet(pet) None
+        +get_pet(name) Pet
+        +get_all_tasks() list~Task~
+    }
+
+    class Scheduler {
+        +Owner owner
+        +sort_by_time(tasks) list~Task~
+        +filter_tasks(pet_name, completed) list~Task~
+        +detect_conflicts() list~str~
+        +mark_task_complete(task) Optional~Task~
+        +todays_schedule(on) list~Task~
+        +format_schedule(tasks) str
+        +explain_schedule(tasks) str
+    }
+
+    Owner "1" --> "*" Pet : has
+    Pet "1" --> "*" Task : has
+    Scheduler --> Owner : reads get_all_tasks()

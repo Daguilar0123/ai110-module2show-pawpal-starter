@@ -45,9 +45,6 @@ class Task:
 
     def mark_complete(self) -> None: ...            # S2
     def next_occurrence(self) -> Task | None: ...   # S4: copy with due_date +1 day / +7 days, completed=False; None if "once"
-    def to_dict(self) -> dict: ...                  # S8
-    @classmethod
-    def from_dict(cls, data: dict) -> Task: ...     # S8
 
 @dataclass
 class Pet:
@@ -58,9 +55,6 @@ class Pet:
     def add_task(self, task: Task) -> None: ...     # S2 (also sets task.pet_name = self.name)
     def list_tasks(self) -> list[Task]: ...         # S2
     def remove_task(self, task: Task) -> bool: ...  # S2
-    def to_dict(self) -> dict: ...                  # S8
-    @classmethod
-    def from_dict(cls, data: dict) -> Pet: ...      # S8
 
 @dataclass
 class Owner:
@@ -70,6 +64,35 @@ class Owner:
     def add_pet(self, pet: Pet) -> None: ...                 # S2
     def get_pet(self, name: str) -> Pet | None: ...          # S2
     def get_all_tasks(self) -> list[Task]: ...               # S2 — every pet's tasks, one list (the multi-pet point)
+
+class Scheduler:
+    """Reads every task through owner.get_all_tasks(); never from a single pet."""
+    def __init__(self, owner: Owner) -> None: ...                                  # S4
+    def sort_by_time(self, tasks: list[Task] | None = None) -> list[Task]: ...     # S4 (key: "HH:MM" → (hour, minute))
+    def filter_tasks(self, pet_name: str | None = None, completed: bool | None = None) -> list[Task]: ...  # S4
+    def detect_conflicts(self) -> list[str]: ...        # S4: warnings for same date+time, incomplete, any pets; never raises
+    def mark_task_complete(self, task: Task) -> Task | None: ...   # S4: task.mark_complete(); next = task.next_occurrence(); append to the pet; return next
+    def todays_schedule(self, on: date | None = None) -> list[Task]: ...   # S4: incomplete tasks due that day, sorted by time
+    def format_schedule(self, tasks: list[Task]) -> str: ...               # S4: emoji per task type + aligned columns
+    def explain_schedule(self, tasks: list[Task]) -> str: ...              # S4: one reason line per task (priority, time, conflict)
+```
+
+## Added in wave 2 (stretch), not in the skeleton
+
+These are added by their sessions with exactly these signatures; adding a method is not a signature change.
+
+```python
+# Task (S8)
+    def to_dict(self) -> dict: ...                  # S8
+    @classmethod
+    def from_dict(cls, data: dict) -> Task: ...     # S8
+
+# Pet (S8)
+    def to_dict(self) -> dict: ...                  # S8
+    @classmethod
+    def from_dict(cls, data: dict) -> Pet: ...      # S8
+
+# Owner (S8)
     def to_dict(self) -> dict: ...                           # S8
     @classmethod
     def from_dict(cls, data: dict) -> Owner: ...             # S8
@@ -77,17 +100,8 @@ class Owner:
     @classmethod
     def load_from_json(cls, path: str = "data.json") -> Owner: ...      # S8
 
-class Scheduler:
-    """Reads every task through owner.get_all_tasks(); never from a single pet."""
-    def __init__(self, owner: Owner) -> None: ...                                  # S4
-    def sort_by_time(self, tasks: list[Task] | None = None) -> list[Task]: ...     # S4 (key: "HH:MM" → (hour, minute))
+# Scheduler
     def sort_by_priority(self, tasks: list[Task] | None = None) -> list[Task]: ... # S4 (PRIORITY_ORDER, then time)
-    def filter_tasks(self, pet_name: str | None = None, completed: bool | None = None) -> list[Task]: ...  # S4
-    def detect_conflicts(self) -> list[str]: ...        # S4: warnings for same date+time, incomplete, any pets; never raises
-    def mark_task_complete(self, task: Task) -> Task | None: ...   # S4: task.mark_complete(); next = task.next_occurrence(); append to the pet; return next
-    def todays_schedule(self, on: date | None = None) -> list[Task]: ...   # S4: incomplete tasks due that day, sorted by time
-    def format_schedule(self, tasks: list[Task]) -> str: ...               # S4: emoji per task type + aligned columns
-    def explain_schedule(self, tasks: list[Task]) -> str: ...              # S4: one reason line per task (priority, time, conflict)
     def next_available_slot(self, duration_minutes: int, on: date | None = None,
                             day_start: str = "07:00", day_end: str = "21:00") -> str | None: ...  # S7
 ```
@@ -116,7 +130,8 @@ Worktrees come off at the end: `git worktree remove ../pawpal-core` etc. (six of
 Stages per session: started / STOP 1 reached / tests green / live check done / committed / merged.
 
 ### S0 — coordinator + Phase 1
-started (env pinned to 3.13.13, CLAUDE.md and this file written; Phase 1 in progress)
+started (env pinned to 3.13.13; setup commit 3e3b11d); Phase 1 files written 10:30 PM ET (uml_draft.mmd, pawpal_system.py skeleton, required work only), skeleton commit pending
+Gates (Danny, Oct 20): wave 1 merged 11:35 PM, wave 2 merged 12:45 AM (only what is green), polish 12:45–1:30, submit 1:45 AM, hard stop 2:15 AM.
 Contract change, Oct 20 2026: Danny chose to add `Scheduler.explain_schedule(tasks) -> str` (S4's region) so his
 third core action, "explain why it chose that plan", has code behind it. Task types stay description keywords;
 time available = `next_available_slot` window; owner preferences are out of scope (reflection 2b, Danny's words).

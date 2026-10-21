@@ -6,6 +6,26 @@
 
 - Briefly describe your initial UML design.
 - What classes did you include, and what responsibilities did you assign to each?
+- Identify three core actions a user should be able to perform (e.g., add a pet, schedule a walk, see today's tasks).
+    1. Track
+        1.a. walks
+        1.b. feeding
+        1.c. meds
+        1.d. enrichment
+        1.e. grooming
+        1.f. other
+    2. Consider constraints
+        2.a. time available
+        2.b. priority
+        2.c. owner preferences
+    3. Produce
+        3.a. daily plan
+        3.b. explain why it chose that plan
+
+    Three broad actions are Track, Consider constraints, and Produce a daily plan
+    Consider UI for tracking walks, feeding, meds, enrichment (playtime), grooming, and let's brainstorm other things that a dog owner would want to track on an app. Maybe health and vet info?
+
+    
 
 **b. Design changes**
 
