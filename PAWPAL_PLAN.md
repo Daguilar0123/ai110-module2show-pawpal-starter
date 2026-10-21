@@ -131,7 +131,7 @@ Stages per session: started / STOP 1 reached / tests green / live check done / c
 
 ### S0 — coordinator + Phase 1
 started (env pinned to 3.13.13; setup commit 3e3b11d); Phase 1 files written 10:30 PM ET (uml_draft.mmd, pawpal_system.py skeleton, required work only), skeleton commit pending
-Gates (Danny, Oct 20): wave 1 merged 11:35 PM, wave 2 merged 12:45 AM (only what is green), polish 12:45–1:30, submit 1:45 AM, hard stop 2:15 AM.
+Gates (Danny, Oct 21, 1:01 AM ET replan): S7 and S8 off for tonight (Wednesday resubmission). Wave 2 is S5 only, then S6 on main. S5 merged by 1:15 AM, S6 done by 1:50, submit by 2:00, hard stop 2:15 AM (deadline 2:59 AM ET).
 Contract change, Oct 20 2026: Danny chose to add `Scheduler.explain_schedule(tasks) -> str` (S4's region) so his
 third core action, "explain why it chose that plan", has code behind it. Task types stay description keywords;
 time available = `next_available_slot` window; owner preferences are out of scope (reflection 2b, Danny's words).
@@ -139,16 +139,16 @@ Prompt patches Danny applies in the study repo: 04_Algorithms.md (add the method
 06_Polish_and_Docs.md (show the explanation in the UI).
 
 ### S2 — core classes (`feat/core-classes`)
-not started
+started 10:45 PM ET · STOP 1 reached 10:48 · tests green (2 passed) · committed df2ec3c · diff read by coordinator 11:26 · merged e053e20 at ~11:35 PM ET (main: 2 passed)
 
 ### S3 — UI integration (`feat/ui-integration`)
-not started
+started 10:45 PM ET · STOP 1 approved · merged main (fast-forward to e053e20) · live check done on 8521 (10/10, Danny) · diff read by coordinator 1:01 AM · commit pending (Danny, 1:01 AM)
 
 ### S4 — scheduler algorithms (`feat/scheduler-algorithms`)
-not started
+started 10:45 PM ET · STOP 1 (9 tests green) · tests green (11 passed with the real Owner, Danny ran them) · live check done (main.py, Danny) · committed b94cdbf and 37031e3 · diff read by coordinator 1:01 AM · merge pending
 
 ### S5 — tests (`test/suite`)
-not started
+not started. Extra for S5 (coordinator, 1:01 AM ET): write `test_mark_task_complete_twice_does_not_duplicate` for the double-complete gap in `Scheduler.mark_task_complete`; show it failing, report it, do not fix it, do not commit it red.
 
 ### S6 — polish and docs (`main`)
 not started
